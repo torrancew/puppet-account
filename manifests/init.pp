@@ -54,7 +54,10 @@
 #
 # === Examples
 #
-# None
+#  account { 'sysadmin':
+#    home_dir => '/opt/home/sysadmin',
+#    groups   => [ 'sudo', 'wheel' ],
+#  }
 #
 # === Authors
 #
