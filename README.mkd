@@ -1,0 +1,9 @@
+# Puppet Account Module
+
+## Usage
+
+### account
+
+## Contributors
+  * Tray Torrance - Author
+
