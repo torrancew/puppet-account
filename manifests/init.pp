@@ -2,9 +2,9 @@
 #
 # A defined type for managing user accounts
 # Features:
-#   * Account creation
+#   * Account creation w/ UID control
 #   * Setting the login shell
-#   * Group creation (optional)
+#   * Group creation w/ GID control (optional)
 #   * Home directory creation ( and optionally management via /etc/skel )
 #   * Support for system users/groups
 #   * SSH key management (optional)
@@ -14,6 +14,11 @@
 # [*username*]
 #   The name of the user to be created.
 #   Defaults to the title of the account resource.
+#
+# [*uid*]
+#   The UID to set for the new account.
+#   If set to undef, this will be auto-generated.
+#   Defaults to undef.
 #
 # [*password*]
 #   The password to set for the user.
@@ -74,7 +79,7 @@
 #
 define account(
   $username = $title, $password = '!', $shell = '/bin/bash', $manage_home = true,
-  $home_dir = "/home/${title}", $create_group = true, $system = false,
+  $home_dir = "/home/${title}", $create_group = true, $system = false, $uid = undef,
   $ssh_key = undef, $ssh_key_type = 'ssh-rsa', $groups = []
 ) {
 
@@ -85,6 +90,7 @@ define account(
         ensure => present,
         name   => $username,
         system => $system,
+        gid    => $uid,
         before => User[$title],
     }
   }
@@ -97,6 +103,7 @@ define account(
     $title:
       ensure     => present,
       name       => $username,
+      uid        => $uid,
       password   => $password,
       shell      => $shell,
       gid        => $primary_group,

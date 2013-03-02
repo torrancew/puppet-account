@@ -3,9 +3,9 @@
 A puppet module designed to ease the management of user accounts.
 
 Currently supports:
-  * Account creation
+  * Account creation w/UID control
   * Setting the login shell
-  * Dedicated Group creation (optional)
+  * Dedicated Group creation w/GID control (optional)
   * Home directory creation ( and optionally management via /etc/skel )
   * Support for system users/groups
   * SSH key management (optional)
