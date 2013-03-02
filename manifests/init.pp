@@ -82,6 +82,7 @@ define account(
     $primary_group = $username
     group {
       $title:
+        ensure => present,
         name   => $username,
         system => $system,
         before => User[$title],
@@ -94,6 +95,7 @@ define account(
 
   user {
     $title:
+      ensure     => present,
       name       => $username,
       password   => $password,
       shell      => $shell,
