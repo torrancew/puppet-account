@@ -4,7 +4,7 @@
 # Features:
 #   * Account creation
 #   * Group creation (optional)
-#   * Home directory management
+#   * Home directory creation ( and optionally management via /etc/skel )
 #   * Support for system users/groups
 #   * SSH key management (optional)
 #
@@ -17,6 +17,10 @@
 # [*password*]
 #   The password to set for the user.
 #   The default is to disable the password.
+#
+# [*shell*]
+#   The user's default login shell.
+#   The default is '/bin/bash'
 #
 # [*manage_home*]
 #   Whether the underlying user resource should manage the home directory.
@@ -68,7 +72,7 @@
 # Copyright 2013 Tray Torrance, unless otherwise noted
 #
 define account(
-  $username = $title, $password = '!', $manage_home = true,
+  $username = $title, $password = '!', $shell = '/bin/bash', $manage_home = true,
   $home_dir = "/home/${title}", $create_group = true, $system = false,
   $ssh_key = undef, $ssh_key_type = 'ssh-rsa', $groups = []
 ) {
@@ -91,6 +95,7 @@ define account(
     $title:
       name       => $username,
       password   => $password,
+      shell      => $shell,
       gid        => $primary_group,
       groups     => $groups,
       home       => $home_dir,
