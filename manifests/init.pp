@@ -3,6 +3,7 @@
 # A defined type for managing user accounts
 # Features:
 #   * Account creation
+#   * Setting the login shell
 #   * Group creation (optional)
 #   * Home directory creation ( and optionally management via /etc/skel )
 #   * Support for system users/groups
