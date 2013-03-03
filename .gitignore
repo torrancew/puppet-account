@@ -1,4 +1,5 @@
 !/.travis/Gemfile
 !/.travis/travis.yml
 
+/pkg/*
 /.travis/*
