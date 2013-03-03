@@ -68,8 +68,8 @@ Feel free to fork and submit pull requests (or use git's own functionality to ma
 
 ## ToDo
 
-  - ~~Unit Tests~~
-  - Submit module to PuppetForge
+  - <del>Unit Tests</del>
+  - <del>Submit module to PuppetForge</del>
 
 ## Contributors
   * Tray Torrance - Author
