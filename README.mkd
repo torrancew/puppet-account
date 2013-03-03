@@ -10,6 +10,10 @@ Currently supports:
   * Support for system users/groups
   * SSH key management (optional)
 
+## Build Status
+
+[![master branch status](https://secure.travis-ci.org/torrancew/puppet-account.png?branch=master)](http://travis-ci.org/torrancew/puppet-account)
+
 ## Documentation
 
 A brief usage summary with examples follows.
@@ -64,8 +68,8 @@ Feel free to fork and submit pull requests (or use git's own functionality to ma
 
 ## ToDo
 
-  * Unit Tests
-  * Submit module to PuppetForge
+  - ~~Unit Tests~~
+  - Submit module to PuppetForge
 
 ## Contributors
   * Tray Torrance - Author
