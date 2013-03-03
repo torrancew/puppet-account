@@ -3,6 +3,7 @@
 A puppet module designed to ease the management of user accounts.
 
 Currently supports:
+
   * Account creation w/UID control
   * Setting the login shell
   * Dedicated Group creation w/GID control (optional)
