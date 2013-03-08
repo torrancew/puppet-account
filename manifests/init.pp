@@ -11,6 +11,11 @@
 #
 # === Parameters
 #
+# [*ensure*]
+#   The state at which to maintain the user account.
+#   Can be one of "present" or "absent".
+#   Defaults to present.
+#
 # [*username*]
 #   The name of the user to be created.
 #   Defaults to the title of the account resource.
@@ -80,28 +85,55 @@
 define account(
   $username = $title, $password = '!', $shell = '/bin/bash', $manage_home = true,
   $home_dir = "/home/${title}", $create_group = true, $system = false, $uid = undef,
-  $ssh_key = undef, $ssh_key_type = 'ssh-rsa', $groups = []
+  $ssh_key = undef, $ssh_key_type = 'ssh-rsa', $groups = [], $ensure = present
 ) {
 
   if $create_group == true {
     $primary_group = $username
+
     group {
       $title:
-        ensure => present,
+        ensure => $ensure,
         name   => $username,
         system => $system,
         gid    => $uid,
-        before => User[$title],
+    }
+
+    case $ensure {
+      present: {
+        Group[$title] -> User[$title]
+      }
+      absent: {
+        User[$title] -> Group[$title]
+      }
     }
   }
-
   else {
     $primary_group = 'users'
   }
 
+
+  case $ensure {
+    present: {
+      $dir_ensure = directory
+      $dir_owner  = $username
+      $dir_group  = $primary_group
+      User[$title] -> File["${title}_home"] -> File["${title}_sshdir"]
+    }
+    absent: {
+      $dir_ensure = absent
+      $dir_owner  = undef
+      $dir_group  = undef
+      File["${title}_sshdir"] -> File["${title}_home"] -> User[$title]
+    }
+    default: {
+      err( "Invalid value given for ensure: ${ensure}. Must be one of present,absent." )
+    }
+  }
+
   user {
     $title:
-      ensure     => present,
+      ensure     => $ensure,
       name       => $username,
       uid        => $uid,
       password   => $password,
@@ -115,31 +147,29 @@ define account(
 
   file {
     "${title}_home":
-      ensure  => directory,
+      ensure  => $dir_ensure,
       path    => $home_dir,
-      owner   => $username,
-      group   => $primary_group,
-      mode    => 0750,
-      require => User[$title];
+      owner   => $dir_owner,
+      group   => $dir_group,
+      mode    => 0750;
 
     "${title}_sshdir":
-      ensure  => directory,
+      ensure  => $dir_ensure,
       path    => "${home_dir}/.ssh",
-      owner   => $username,
-      group   => $primary_group,
-      mode    => 0700,
-      require => File["${title}_home"];
+      owner   => $dir_owner,
+      group   => $dir_group,
+      mode    => 0700;
   }
 
   if $ssh_key != undef {
+    File["${title}_sshdir"]->
     ssh_authorized_key {
       $title:
-        ensure  => present,
+        ensure  => $ensure,
         type    => $ssh_key_type,
         name    => "${title} SSH Key",
         user    => $username,
         key     => $ssh_key,
-        require => File["${title}_sshdir"];
     }
   }
 }

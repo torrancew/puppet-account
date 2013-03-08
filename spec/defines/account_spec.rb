@@ -26,6 +26,7 @@ describe 'account' do
         'home'       => "/home/#{title}",
         'managehome' => true,
         'system'     => false,
+        'before'     => "File[#{title}_home]",
       })
     end
 
@@ -36,7 +37,7 @@ describe 'account' do
         'owner'   => title,
         'group'   => title,
         'mode'    => '0750',
-        'require' => "User[#{title}]",
+        'before'  => "File[#{title}_sshdir]",
       })
     end
 
@@ -47,7 +48,6 @@ describe 'account' do
         'owner'   => title,
         'group'   => title,
         'mode'    => '0700',
-        'require' => "File[#{title}_home]",
       })
     end
   end
