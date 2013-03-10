@@ -4,6 +4,7 @@ A puppet module designed to ease the management of user accounts.
 
 Currently supports:
 
+  * Creation/Removal of accounts (via the "ensure" parameter)
   * Account creation w/UID control
   * Setting the login shell
   * Dedicated Group creation w/GID control (optional)
@@ -71,6 +72,7 @@ Feel free to fork and submit pull requests (or use git's own functionality to ma
 
   - <del>Unit Tests</del>
   - <del>Submit module to PuppetForge</del>
+  - <del>Support for removing accounts</del>
 
 ## Contributors
   * Tray Torrance - Author
