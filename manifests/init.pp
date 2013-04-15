@@ -83,7 +83,7 @@
 # Copyright 2013 Tray Torrance, unless otherwise noted
 #
 define account(
-  $username = $title, $password = '!', $shell = '/bin/bash', $manage_home = true,
+  $username = $title, $password = '!',$comment= 'Puppet', $shell = '/bin/bash', $manage_home = true,
   $home_dir = "/home/${title}", $create_group = true, $system = false, $uid = undef,
   $ssh_key = undef, $ssh_key_type = 'ssh-rsa', $groups = [], $ensure = present
 ) {
@@ -135,6 +135,7 @@ define account(
     $title:
       ensure     => $ensure,
       name       => $username,
+	  comment    => $comment
       uid        => $uid,
       password   => $password,
       shell      => $shell,

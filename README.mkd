@@ -34,6 +34,7 @@ Standard usage of this defined type would probably look something like this:
         home_dir => '/opt/sysadmin',
         groups   => [ 'sudo', 'users' ],
         ssh_key  => 'AAAAB3NzaC1yc2EAAAABIwAAAQEArfQmMkvtWRnwas3DIti9qAuSFQXKcE0kdp5f42PP8l2kTytJPPWp5T/q8PXDQ2d2X5KplMCMDiUQkchqhmDp840jsqBQ9iZPejAjv3w2kITgScFNymAcErtzX52iw4lnUyjZzomCW8G3YthQMaRm2NkI4wcVcjzq+SKyTfzrBoH21RgZlfcx+/50AFRrarpYqel9W5DuLmmShHxD8clPS532Z/1X+1jCW2KikUhdo98lxYTIgFno05lwFOS9Ry89UyBarn1Ecp1zXpIBE7dMQif3UyLUTU9zCVIoZiJj4iO5lemSSV0v8GL97qclBUVJpaCpc4ebR7bhi0nQ28RcxQ==',
+	   comment   => 'SysAdmin user',
     }
 
 The type can also be virtualized and realized later (see the official [documentation](http://docs.puppetlabs.com/guides/virtual_resources.html) for more information on this pattern):
