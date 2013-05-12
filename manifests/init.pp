@@ -67,6 +67,9 @@
 #   the ssh_authorized_key's 'type' parameter.
 #   Defaults to 'ssh-rsa'.
 #
+# [*comment*]
+#   Sets comment metadata for the user
+#
 # === Examples
 #
 #  account { 'sysadmin':
