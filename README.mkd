@@ -56,7 +56,7 @@ For use with [hiera](http://docs.puppetlabs.com/#hierahiera1), one could define 
         groups:
           - users
 
-And then use the [create_resources function](http://docs.puppetlabs.com/references/3.1.latest/function.html#createresources) in a puppet manifest:
+And then use the [create_resources function](http://docs.puppetlabs.com/references/latest/function.html#createresources) in a puppet manifest:
 
     $accounts = hiera('accounts')
     create_resources('account', $accounts)
