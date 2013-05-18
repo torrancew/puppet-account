@@ -70,6 +70,11 @@
 # [*comment*]
 #   Sets comment metadata for the user
 #
+# [*gid*]
+#   Sets the primary group of this user, if $create_group = false
+#   Defaults to 'users'
+#     WARNING: Has no effect if used with $create_group = true
+#
 # === Examples
 #
 #  account { 'sysadmin':
@@ -89,7 +94,7 @@ define account(
   $username = $title, $password = '!', $shell = '/bin/bash', $manage_home = true,
   $home_dir = "/home/${title}", $create_group = true, $system = false, $uid = undef,
   $ssh_key = undef, $ssh_key_type = 'ssh-rsa', $groups = [], $ensure = present,
-  $comment= "$title Puppet-managed User"
+  $comment= "$title Puppet-managed User", $gid = 'users'
 ) {
 
   if $create_group == true {
@@ -113,7 +118,7 @@ define account(
     }
   }
   else {
-    $primary_group = 'users'
+    $primary_group = $gid
   }
 
 

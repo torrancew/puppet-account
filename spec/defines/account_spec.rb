@@ -122,5 +122,26 @@ describe 'account' do
       should contain_file( "#{title}_sshdir" ).with({ 'group' => 'users' })
     end
   end
+
+  describe 'account with no dedicated group' do
+    let( :title ) { 'user' }
+    let( :params ) {{ :create_group => false, :gid => 'staff' }}
+
+    it do
+      should_not contain_group( title )
+    end
+
+    it do
+      should contain_user( title ).with({ 'gid' => params[:gid] })
+    end
+
+    it do
+      should contain_file( "#{title}_home" ).with({ 'group' => params[:gid] })
+    end
+
+    it do
+      should contain_file( "#{title}_sshdir" ).with({ 'group' => params[:gid] })
+    end
+  end
 end
 
