@@ -1,0 +1,17 @@
+v0.0.4: 2013-07-04
+Changes:
+  - Add a 'gid' parameter for use when create_group => false
+  - Updates test fixtures
+
+v0.0.3: 2013-05-11
+Changes:
+  - Adds a 'comment' parameter for the created user account (@guerremdq)
+
+v0.0.2: 2013-03-02
+Changes:
+  - Version bump to fix potential inconsistencies with older dev releases
+
+v0.0.1: 2013-03-02
+Changes:
+  - Initial PuppetForge release
+
