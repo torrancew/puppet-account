@@ -92,10 +92,16 @@
 #
 define account(
   $username = $title, $password = '!', $shell = '/bin/bash', $manage_home = true,
-  $home_dir = "/home/${title}", $create_group = true, $system = false, $uid = undef,
+  $home_dir = undef, $create_group = true, $system = false, $uid = undef,
   $ssh_key = undef, $ssh_key_type = 'ssh-rsa', $groups = [], $ensure = present,
   $comment= "$title Puppet-managed User", $gid = 'users'
 ) {
+
+  if $home_dir == undef {
+      $home_dir_real = "/home/${username}"
+  } else {
+      $home_dir_real = $home_dir
+  }
 
   if $create_group == true {
     $primary_group = $username
@@ -150,7 +156,7 @@ define account(
       shell      => $shell,
       gid        => $primary_group,
       groups     => $groups,
-      home       => $home_dir,
+      home       => $home_dir_real,
       managehome => $manage_home,
       system     => $system,
   }
@@ -158,14 +164,14 @@ define account(
   file {
     "${title}_home":
       ensure  => $dir_ensure,
-      path    => $home_dir,
+      path    => $home_dir_real,
       owner   => $dir_owner,
       group   => $dir_group,
       mode    => 0750;
 
     "${title}_sshdir":
       ensure  => $dir_ensure,
-      path    => "${home_dir}/.ssh",
+      path    => "${home_dir_real}/.ssh",
       owner   => $dir_owner,
       group   => $dir_group,
       mode    => 0700;
