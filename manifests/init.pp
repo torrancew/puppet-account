@@ -91,10 +91,11 @@
 # Copyright 2013 Tray Torrance, unless otherwise noted
 #
 define account(
-  $username = $title, $password = '!', $shell = '/bin/bash', $manage_home = true,
-  $home_dir = undef, $create_group = true, $system = false, $uid = undef,
-  $ssh_key = undef, $ssh_key_type = 'ssh-rsa', $groups = [], $ensure = present,
-  $comment= "$title Puppet-managed User", $gid = 'users'
+  $username = $title, $password = '!', $shell = '/bin/bash',
+  $manage_home = true, $home_dir = undef, $create_group = true,
+  $system = false, $uid = undef, $ssh_key = undef, $ssh_key_type = 'ssh-rsa',
+  $groups = [], $ensure = present, $comment= "${title} Puppet-managed User",
+  $gid = 'users'
 ) {
 
   if $home_dir == undef {
@@ -121,6 +122,7 @@ define account(
       absent: {
         User[$title] -> Group[$title]
       }
+      default: {}
     }
   }
   else {
@@ -167,14 +169,14 @@ define account(
       path    => $home_dir_real,
       owner   => $dir_owner,
       group   => $dir_group,
-      mode    => 0750;
+      mode    => '0750';
 
     "${title}_sshdir":
       ensure  => $dir_ensure,
       path    => "${home_dir_real}/.ssh",
       owner   => $dir_owner,
       group   => $dir_group,
-      mode    => 0700;
+      mode    => '0700';
   }
 
   if $ssh_key != undef {
