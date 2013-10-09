@@ -43,6 +43,10 @@
 #   The location of the user's home directory.
 #   Defaults to "/home/$title".
 #
+# [*home_dir_perms*]
+#   The permissions set on the home directory.
+#   Defaults to 0750
+#
 # [*create_group*]
 #   Whether or not a dedicated group should be created for this user.
 #   If set, a group with the same name as the user will be created.
@@ -92,9 +96,9 @@
 #
 define account(
   $username = $title, $password = '!', $shell = '/bin/bash', $manage_home = true,
-  $home_dir = undef, $create_group = true, $system = false, $uid = undef,
-  $ssh_key = undef, $ssh_key_type = 'ssh-rsa', $groups = [], $ensure = present,
-  $comment= "$title Puppet-managed User", $gid = 'users'
+  $home_dir = undef, $home_dir_perms = '0750', $create_group = true, $system = false,
+  $uid = undef, $ssh_key = undef, $ssh_key_type = 'ssh-rsa', $groups = [],
+  $ensure = present, $comment= "$title Puppet-managed User", $gid = 'users'
 ) {
 
   if $home_dir == undef {
@@ -167,7 +171,7 @@ define account(
       path    => $home_dir_real,
       owner   => $dir_owner,
       group   => $dir_group,
-      mode    => 0750;
+      mode    => $home_dir_perms;
 
     "${title}_sshdir":
       ensure  => $dir_ensure,

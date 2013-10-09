@@ -55,13 +55,14 @@ describe 'account' do
   describe 'account with custom values' do
     let( :title ) { 'admin' }
     let( :params ) {{
-      :username    => 'sysadmin',
-      :shell       => '/bin/zsh',
-      :manage_home => false,
-      :home_dir    => '/opt/admin',
-      :system      => true,
-      :uid         => 777,
-      :groups      => [ 'sudo', 'users' ],
+      :username       => 'sysadmin',
+      :shell          => '/bin/zsh',
+      :manage_home    => false,
+      :home_dir       => '/opt/admin',
+      :home_dir_perms => '0700',
+      :system         => true,
+      :uid            => 777,
+      :groups         => [ 'sudo', 'users' ],
     }}
 
     it do
@@ -90,10 +91,11 @@ describe 'account' do
         'path'  => params[:home_dir],
         'owner' => params[:username],
         'group' => params[:username],
+        'mode'  => params[:home_dir_perms],
       })
     end
 
-    it do 
+    it do
       should contain_file( "#{title}_sshdir" ).with({
         'path' => "#{params[:home_dir]}/.ssh",
         'owner' => params[:username],
