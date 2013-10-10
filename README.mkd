@@ -76,7 +76,8 @@ Feel free to fork and submit pull requests (or use git's own functionality to ma
   - <del>Support for removing accounts</del>
 
 ## Contributors
-  * Tray Torrance    (torrancew) - Author
-  * Facundo Guerrero (guerremdq) - Support for 'comment' parameter
-  * YuviPanda        (yuvipanda) - Bugfix
+  * Tray Torrance    (torrancew)   - Author
+  * Facundo Guerrero (guerremdq)   - Support for 'comment' parameter
+  * YuviPanda        (yuvipanda)   - Bugfix
+  * Justin Lambert   (jlambert121) - Support for configurable home directory permissions, puppet-lint
 
