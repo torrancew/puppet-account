@@ -169,7 +169,7 @@ define account(
       path    => $home_dir_real,
       owner   => $dir_owner,
       group   => $dir_group,
-      mode    => '0750';
+      mode    => $home_dir_perms;
 
     "${title}_sshdir":
       ensure  => $dir_ensure,
