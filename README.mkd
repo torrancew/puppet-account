@@ -58,7 +58,7 @@ For use with [hiera](http://docs.puppetlabs.com/#hierahiera1), one could define 
 
 And then use the [create_resources function](http://docs.puppetlabs.com/references/latest/function.html#createresources) in a puppet manifest:
 
-    $accounts = hiera('accounts')
+    $accounts = hiera_hash('accounts')
     create_resources('account', $accounts)
 
 ## Feedback
