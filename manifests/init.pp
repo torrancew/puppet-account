@@ -99,8 +99,20 @@ define account(
 ) {
 
   if $home_dir == undef {
-      $home_dir_real = "/home/${username}"
-  } else {
+    if $username == "root" {
+       case $operatingsystem {
+       'Solaris': { $home_dir_real = "/" }
+       default:   { $home_dir_real = "/root" }
+       }
+    }
+    else {
+       case $operatingsystem {
+       'Solaris': { $home_dir_real = "/export/home/${username}" }
+       default:   { $home_dir_real = "/home/${username}" }
+       }
+    }
+  }
+  else {
       $home_dir_real = $home_dir
   }
 
