@@ -100,16 +100,16 @@ define account(
 
   if $home_dir == undef {
     if $username == 'root' {
-       case $::operatingsystem {
-       'Solaris': { $home_dir_real = '/' }
-       default:   { $home_dir_real = '/root' }
-       }
+      case $::operatingsystem {
+        'Solaris': { $home_dir_real = '/' }
+        default:   { $home_dir_real = '/root' }
+      }
     }
     else {
-       case $::operatingsystem {
-       'Solaris': { $home_dir_real = "/export/home/${username}" }
-       default:   { $home_dir_real = "/home/${username}" }
-       }
+      case $::operatingsystem {
+        'Solaris': { $home_dir_real = "/export/home/${username}" }
+        default:   { $home_dir_real = "/home/${username}" }
+      }
     }
   }
   else {
