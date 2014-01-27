@@ -75,6 +75,11 @@
 #   Defaults to 'users'
 #     WARNING: Has no effect if used with $create_group = true
 #
+# [*allowdupe*]
+#   Whether to allow duplicate UIDs.
+#   Defaults to false.
+#   Valid values are true, false, yes, no.
+#
 # === Examples
 #
 #  account { 'sysadmin':
@@ -95,7 +100,7 @@ define account(
   $manage_home = true, $home_dir = undef,  $home_dir_perms = '0750',
   $create_group = true, $system = false, $uid = undef, $ssh_key = undef,
   $ssh_key_type = 'ssh-rsa', $groups = [], $ensure = present,
-  $comment= "${title} Puppet-managed User", $gid = 'users'
+  $comment= "${title} Puppet-managed User", $gid = 'users', $allowdupe = false
 ) {
 
   if $home_dir == undef {
@@ -173,6 +178,7 @@ define account(
       home       => $home_dir_real,
       managehome => $manage_home,
       system     => $system,
+      allowdupe  => $allowdupe,
   }
 
   file {

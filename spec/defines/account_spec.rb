@@ -26,6 +26,7 @@ describe 'account' do
         'home'       => "/home/#{title}",
         'managehome' => true,
         'system'     => false,
+        'allowdupe'  => false,
         'before'     => "File[#{title}_home]",
       })
     end
@@ -83,6 +84,7 @@ describe 'account' do
         'home'        => params[:home_dir],
         'manage_home' => params[:manage_home] == false ? nil : true,
         'system'      => params[:system],
+        'allowdupe'   => params[:allowdupe],
       })
     end
 
