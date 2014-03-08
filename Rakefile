@@ -1,7 +1,11 @@
 require 'rubygems'
-require 'puppetlabs_spec_helper/rake_tasks'
 require 'puppet-lint'
-PuppetLint.configuration.send("disable_80chars")
-PuppetLint.configuration.send("disable_autoloader_layout")
-PuppetLint.configuration.send("disable_quoted_booleans")
+require 'puppetlabs_spec_helper/rake_tasks'
+
+# Disable unwanted checks
+['80chars', 'autoloader_layout', 'quoted_booleans'].each do |chk|
+  PuppetLint.configuration.send('disable_%s' % [chk])
+end
+
+PuppetLint.configuration.ignore_paths = ['vendor/**/*.pp']
 
