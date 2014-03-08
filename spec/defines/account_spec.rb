@@ -63,6 +63,7 @@ describe 'account' do
       :home_dir_perms => '0700',
       :system         => true,
       :uid            => 777,
+      :allowdupe      => true,
       :groups         => [ 'sudo', 'users' ],
     }}
 
