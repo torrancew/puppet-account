@@ -1,6 +1,14 @@
+v0.1.0: 2014-??-??
+Changes:
+  - Support for the 'allowdupe' feature of the 'user' type  - Aurelien Requiem (@aureq)
+  - Solaris compatibility                                   - Sauce (@sauce)
+  - Root user support                                       - Sauce (@sauce)
+  - Configurable homedir permissions                        - Justin Lambert (@jlambert121)
+  - Puppet lint used in testing                             - Justin Lambert (@jlambert121)
+
 v0.0.5: 2013-07-23
 Changes:
-  - Use 'username' to construct homedir, instead of 'title'
+  - Use 'username' to construct homedir, instead of 'title' - Yuvi Panda (@yuvipanda)
 
 v0.0.4: 2013-07-04
 Changes:
@@ -9,7 +17,7 @@ Changes:
 
 v0.0.3: 2013-05-11
 Changes:
-  - Adds a 'comment' parameter for the created user account (@guerremdq)
+  - Adds a 'comment' parameter for the created user account - Facundo Guerrero (@guerremdq)
 
 v0.0.2: 2013-03-02
 Changes:
