@@ -1,5 +1,8 @@
-!/.travis/Gemfile
-!/.travis/travis.yml
+!/.ci/Gemfile
+!/.ci/travis.yml
 
+/bin/*
 /pkg/*
-/.travis/*
+/.ci/*
+/vendor/
+/spec/fixtures/
