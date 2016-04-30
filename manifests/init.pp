@@ -99,7 +99,7 @@ define account(
   $username = $title, $password = '!', $shell = '/bin/bash',
   $manage_home = true, $home_dir = undef,  $home_dir_perms = '0750',
   $create_group = true, $system = false, $uid = undef, $ssh_key = undef,
-  $ssh_key_type = 'ssh-rsa', $groups = [], $ensure = present,
+  $ssh_key_type = 'ssh-rsa', $groups = [], $ensure = present, $purge = false,
   $comment= "${title} Puppet-managed User", $gid = 'users', $allowdupe = false
 ) {
 
@@ -187,6 +187,7 @@ define account(
       path    => $home_dir_real,
       owner   => $dir_owner,
       group   => $dir_group,
+      force   => $purge,
       mode    => $home_dir_perms;
 
     "${title}_sshdir":
@@ -194,6 +195,7 @@ define account(
       path    => "${home_dir_real}/.ssh",
       owner   => $dir_owner,
       group   => $dir_group,
+      force   => $purge,
       mode    => '0700';
   }
 
