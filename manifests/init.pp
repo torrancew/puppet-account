@@ -203,11 +203,11 @@ define account(
     File["${title}_sshdir"]->
     ssh_authorized_key {
       $title:
-        ensure  => $ensure,
-        type    => $ssh_key_type,
-        name    => "${title} SSH Key",
-        user    => $username,
-        key     => $ssh_key,
+        ensure => $ensure,
+        type   => $ssh_key_type,
+        name   => "${title} SSH Key",
+        user   => $username,
+        key    => $ssh_key,
     }
   }
 }
