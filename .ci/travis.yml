@@ -13,7 +13,7 @@ env:
   - PUPPET_VERSION=2.7.26
   - PUPPET_VERSION=3.8.7
   - PUPPET_VERSION=4.4.2
-gemfile: .travis/Gemfile
+gemfile: .ci/Gemfile
 matrix:
   exclude:
     - rvm: 1.8.7
