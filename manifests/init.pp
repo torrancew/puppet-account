@@ -53,6 +53,10 @@
 #   Otherwise, the user's primary group will be set to "users".
 #   Defaults to true.
 #
+# [*purge*]
+#   Whether the user's home and ssh directories should be forcibly removed
+#   when set to absent
+#
 # [*groups*]
 #   An array of additional groups to add the user to.
 #   Defaults to an empty array.
