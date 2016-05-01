@@ -43,6 +43,10 @@
 #   The location of the user's home directory.
 #   Defaults to "/home/$title".
 #
+# [*home_dir_perms*]
+#   The permissions set on the home directory.
+#   Defaults to 0750
+#
 # [*create_group*]
 #   Whether or not a dedicated group should be created for this user.
 #   If set, a group with the same name as the user will be created.
