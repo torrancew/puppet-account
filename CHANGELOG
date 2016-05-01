@@ -1,5 +1,6 @@
-v0.1.0: 2014-??-??
+v0.1.0: 2016-05-01
 Changes:
+  - Add 'purge' option to forcibly remove user directories  - Igor Ajdišek (@igoraj)
   - Support for the 'allowdupe' feature of the 'user' type  - Aurelien Requiem (@aureq)
   - Solaris compatibility                                   - Sauce (@sauce)
   - Root user support                                       - Sauce (@sauce)
