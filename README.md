@@ -2,20 +2,20 @@
 
 A puppet module designed to ease the management of user accounts.
 
-Currently supports:
+Features:
 
-  * Creation/Removal of accounts (via the "ensure" parameter)
+  * Creation/Removal of accounts (via the `ensure` parameter)
   * Account creation w/UID control
   * Setting the login shell
   * Dedicated Group creation w/GID control (optional)
-  * Home directory creation ( and optionally management via /etc/skel )
+  * Home directory creation (and optionally management via `/etc/skel`)
   * Support for system users
   * SSH key management (optional)
 
-Notes/Drawbacks:
+Limitations:
 
-  * Does not currently support multiple ssh keys per account. (coming soon-ish)
-  * Does not automatically create arbitrary extra groups. Use the native group type for this.
+  * Does **not** currently support multiple ssh keys per account. (coming soon-ish)
+  * Does **not** automatically create arbitrary extra groups. Use the native group type for this.
 
 ## Build Status
 
@@ -26,7 +26,7 @@ Notes/Drawbacks:
 A brief usage summary with examples follows.
 For full documentation of all parameters, see the inline puppet docs:
 
-    $ puppet doc /etc/puppet/modules/account/manifests/init.pp
+    $ puppet doc manifests/init.pp
 
 ## Usage
 
@@ -34,12 +34,11 @@ For full documentation of all parameters, see the inline puppet docs:
 
 Standard usage of this defined type would probably look something like this:
 
-    account { 
-      'sysadmin':
-        home_dir => '/opt/sysadmin',
-        groups   => [ 'sudo', 'users' ],
-        ssh_key  => 'AAAAB3NzaC1yc2EAAAABIwAAAQEArfQmMkvtWRnwas3DIti9qAuSFQXKcE0kdp5f42PP8l2kTytJPPWp5T/q8PXDQ2d2X5KplMCMDiUQkchqhmDp840jsqBQ9iZPejAjv3w2kITgScFNymAcErtzX52iw4lnUyjZzomCW8G3YthQMaRm2NkI4wcVcjzq+SKyTfzrBoH21RgZlfcx+/50AFRrarpYqel9W5DuLmmShHxD8clPS532Z/1X+1jCW2KikUhdo98lxYTIgFno05lwFOS9Ry89UyBarn1Ecp1zXpIBE7dMQif3UyLUTU9zCVIoZiJj4iO5lemSSV0v8GL97qclBUVJpaCpc4ebR7bhi0nQ28RcxQ==',
-        comment   => 'SysAdmin user',
+    account { 'sysadmin':
+      home_dir => '/opt/sysadmin',
+      groups   => [ 'sudo', 'users' ],
+      ssh_key  => 'AAAAB3NzaC1yc2EAAAABIwAAAQEArfQmMkvtWRnwas3DIti9qAuSFQXKcE0kdp5f42PP8l2kTytJPPWp5T/q8PXDQ2d2X5KplMCMDiUQkchqhmDp840jsqBQ9iZPejAjv3w2kITgScFNymAcErtzX52iw4lnUyjZzomCW8G3YthQMaRm2NkI4wcVcjzq+SKyTfzrBoH21RgZlfcx+/50AFRrarpYqel9W5DuLmmShHxD8clPS532Z/1X+1jCW2KikUhdo98lxYTIgFno05lwFOS9Ry89UyBarn1Ecp1zXpIBE7dMQif3UyLUTU9zCVIoZiJj4iO5lemSSV0v8GL97qclBUVJpaCpc4ebR7bhi0nQ28RcxQ==',
+      comment   => 'SysAdmin user',
     }
 
 The type can also be virtualized and realized later (see the [official documentation](http://docs.puppetlabs.com/guides/virtual_resources.html) for more information on this pattern):
@@ -72,7 +71,7 @@ Please use the github issues functionality to report any bugs or requests for ne
 
 ## Contribution
 
-Feel free to fork and submit pull requests (or use git's own functionality to mail me patches) for potential contributions.
+Feel free to fork and submit pull requests for potential contributions.
 
 ## ToDo
 
@@ -80,4 +79,5 @@ Feel free to fork and submit pull requests (or use git's own functionality to ma
   - <del>Submit module to PuppetForge</del>
   - <del>Support for removing accounts</del>
   - Support for multiple SSH keys
+  * <del>Acceptance Tests</del>
 

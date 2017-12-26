@@ -9,3 +9,4 @@ end
 
 PuppetLint.configuration.ignore_paths = ['vendor/**/*.pp']
 
+task :ci => [:validate, :lint, :spec, :beaker]

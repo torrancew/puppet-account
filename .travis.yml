@@ -1,1 +1,16 @@
-.ci/travis.yml
+sudo: required
+language: ruby
+services:
+  - docker
+script:
+  - 'bundle exec rake ci'
+rvm:
+  - 2.1
+  - 2.3
+  - 2.5
+env:
+  - PUPPET_VERSION="~> 4.10"
+  - PUPPET_VERSION="~> 5.3"
+matrix:
+  allow_failures:
+    - rvm: 2.5

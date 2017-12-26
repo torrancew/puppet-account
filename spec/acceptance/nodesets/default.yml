@@ -1,0 +1,12 @@
+---
+HOSTS:
+  debian9:
+    platform: debian-9-amd64
+    image: debian:9
+    hypervisor: docker
+    docker_preserve_image: true
+    docker_image_commands:
+    - 'apt-get install -y wget'
+CONFIG:
+  type: foss
+  masterless: true

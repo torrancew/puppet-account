@@ -113,13 +113,13 @@ define account(
 
   if $home_dir == undef {
     if $username == 'root' {
-      case $::operatingsystem {
+      case $::facts['operatingsystem'] {
         'Solaris': { $home_dir_real = '/' }
         default:   { $home_dir_real = '/root' }
       }
     }
     else {
-      case $::operatingsystem {
+      case $::facts['operatingsystem'] {
         'Solaris': { $home_dir_real = "/export/home/${username}" }
         default:   { $home_dir_real = "/home/${username}" }
       }
@@ -191,25 +191,25 @@ define account(
 
   file {
     "${title}_home":
-      ensure  => $dir_ensure,
-      path    => $home_dir_real,
-      owner   => $dir_owner,
-      group   => $dir_group,
-      force   => $purge,
-      mode    => $home_dir_perms;
+      ensure => $dir_ensure,
+      path   => $home_dir_real,
+      owner  => $dir_owner,
+      group  => $dir_group,
+      force  => $purge,
+      mode   => $home_dir_perms;
 
     "${title}_sshdir":
-      ensure  => $dir_ensure,
-      path    => "${home_dir_real}/.ssh",
-      owner   => $dir_owner,
-      group   => $dir_group,
-      force   => $purge,
-      mode    => '0700';
+      ensure => $dir_ensure,
+      path   => "${home_dir_real}/.ssh",
+      owner  => $dir_owner,
+      group  => $dir_group,
+      force  => $purge,
+      mode   => '0700';
   }
 
   if $ssh_key != undef {
-    File["${title}_sshdir"]->
-    ssh_authorized_key {
+    File["${title}_sshdir"]
+    -> ssh_authorized_key {
       $title:
         ensure => $ensure,
         type   => $ssh_key_type,
