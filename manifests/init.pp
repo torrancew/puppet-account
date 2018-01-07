@@ -129,20 +129,18 @@ define account(
         default:   { $home_dir_real = "/home/${username}" }
       }
     }
-  }
-  else {
-      $home_dir_real = $home_dir
+  } else {
+    $home_dir_real = $home_dir
   }
 
   if $create_group == true {
     $primary_group = $username
 
-    group {
-      $title:
-        ensure => $ensure,
-        name   => $username,
-        system => $system,
-        gid    => $uid,
+    group { $title:
+      ensure => $ensure,
+      name   => $username,
+      system => $system,
+      gid    => $uid,
     }
 
     if $ensure == 'present' {
@@ -168,38 +166,37 @@ define account(
     File["${title}_sshdir"] -> File["${title}_home"] -> User[$title]
   }
 
-  user {
-    $title:
-      ensure     => $ensure,
-      name       => $username,
-      comment    => $comment,
-      uid        => $uid,
-      password   => $password,
-      shell      => $shell,
-      gid        => $primary_group,
-      groups     => $groups,
-      home       => $home_dir_real,
-      managehome => $manage_home,
-      system     => $system,
-      allowdupe  => $allowdupe,
+  user { $title:
+    ensure     => $ensure,
+    name       => $username,
+    comment    => $comment,
+    uid        => $uid,
+    password   => $password,
+    shell      => $shell,
+    gid        => $primary_group,
+    groups     => $groups,
+    home       => $home_dir_real,
+    managehome => $manage_home,
+    system     => $system,
+    allowdupe  => $allowdupe,
   }
 
-  file {
-    "${title}_home":
-      ensure => $dir_ensure,
-      path   => $home_dir_real,
-      owner  => $dir_owner,
-      group  => $dir_group,
-      force  => $purge,
-      mode   => $home_dir_perms;
+  file { "${title}_home":
+    ensure => $dir_ensure,
+    path   => $home_dir_real,
+    owner  => $dir_owner,
+    group  => $dir_group,
+    force  => $purge,
+    mode   => $home_dir_perms,
+  }
 
-    "${title}_sshdir":
-      ensure => $dir_ensure,
-      path   => "${home_dir_real}/.ssh",
-      owner  => $dir_owner,
-      group  => $dir_group,
-      force  => $purge,
-      mode   => '0700';
+  file { "${title}_sshdir":
+    ensure => $dir_ensure,
+    path   => "${home_dir_real}/.ssh",
+    owner  => $dir_owner,
+    group  => $dir_group,
+    force  => $purge,
+    mode   => '0700',
   }
 
   $ssh_keys.each |$key_id, $key_data| {
