@@ -29,7 +29,12 @@ describe 'account defined type' do
     let (:code) {
       <<-EOS
         account { 'ssh_key_user':
-          ssh_key => 'abcdefghijklmnopqrstuvwxyz',
+          ssh_keys => {
+            managed_key => {
+              key  => 'abcdefghijklmnopqrstuvwxyz',
+              type => 'ssh-rsa',
+            },
+          }
         }
       EOS
     }
@@ -41,7 +46,37 @@ describe 'account defined type' do
 
     describe user('ssh_key_user') do
       it { should exist }
-      it { should have_authorized_key 'ssh-rsa abcdefghijklmnopqrstuvwxyz ssh_key_user SSH Key' }
+      it { should have_authorized_key 'ssh-rsa abcdefghijklmnopqrstuvwxyz ssh_key_user_managed_key' }
+    end
+  end
+
+  context 'with multiple ssh keys' do
+    let (:code) {
+      <<-EOS
+        account { 'multi_ssh_key_user':
+          ssh_keys => {
+            first_key  => {
+              key  => 'abcdefghijklmnopqrstuvwxyz',
+              type => 'ssh-rsa',
+            },
+            second_key => {
+              key  => 'zyxwvutsrqponmlkjihgfedcba',
+              type => 'ssh-rsa',
+            },
+          },
+        }
+      EOS
+    }
+
+    it 'should run without errors' do
+      result = apply_manifest(code, :catch_failures => true)
+      expect(result.exit_code).to eq 2
+    end
+
+    describe user('multi_ssh_key_user') do
+      it { should exist }
+      it { should have_authorized_key 'ssh-rsa abcdefghijklmnopqrstuvwxyz multi_ssh_key_user_first_key' }
+      it { should have_authorized_key 'ssh-rsa zyxwvutsrqponmlkjihgfedcba multi_ssh_key_user_second_key' }
     end
   end
 end

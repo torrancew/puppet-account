@@ -5,7 +5,7 @@
 #   * Account creation w/ UID control
 #   * Setting the login shell
 #   * Group creation w/ GID control (optional)
-#   * Home directory creation ( and optionally management via /etc/skel )
+#   * Home directory creation (and optionally management via /etc/skel)
 #   * Support for system users/groups
 #   * SSH key management (optional)
 #
@@ -65,15 +65,9 @@
 #   Whether the user is a "system" user or not.
 #   Defaults to false.
 #
-# [*ssh_key*]
-#   A string containing a public key suitable for SSH logins
-#   If set to 'undef', no key will be created.
-#   Defaults to undef.
-#
-# [*ssh_key_type*]
-#   The type of SSH key to manage. Accepts any value accepted by
-#   the ssh_authorized_key's 'type' parameter.
-#   Defaults to 'ssh-rsa'.
+# [*ssh_keys*]
+#   A hash of Account::Sshkey structs containing one or more public key suitable for SSH logins
+#   Defaults to {}.
 #
 # [*comment*]
 #   Sets comment metadata for the user
@@ -113,8 +107,7 @@ define account(
   Boolean $create_group                   = true,
   Boolean $system                         = false,
   Optional[Integer] $uid                  = undef,
-  Optional[String] $ssh_key               = undef,
-  String $ssh_key_type                    = 'ssh-rsa',
+  Hash[String, Account::Sshkey] $ssh_keys = {},
   Array[Variant[Integer, String]] $groups = [],
   Enum[present, absent] $ensure           = present,
   Boolean $purge                          = false,
@@ -209,15 +202,17 @@ define account(
       mode   => '0700';
   }
 
-  if $ssh_key != undef {
-    File["${title}_sshdir"]
-    -> ssh_authorized_key {
-      $title:
-        ensure => $ensure,
-        type   => $ssh_key_type,
-        name   => "${title} SSH Key",
-        user   => $username,
-        key    => $ssh_key,
+  $ssh_keys.each |$key_id, $key_data| {
+    ssh_authorized_key { "${title}_${key_id}":
+      ensure => $ensure,
+      user   => $username,
+      *      => $key_data,
+    }
+
+    if $ensure == 'present' {
+      File["${title}_sshdir"] -> Ssh_authorized_key["${title}_${key_id}"]
+    } else {
+      Ssh_authorized_key["${title}_${key_id}"] -> File["${title}_sshdir"]
     }
   }
 }

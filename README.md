@@ -14,7 +14,6 @@ Features:
 
 Limitations:
 
-  * Does **not** currently support multiple ssh keys per account. (coming soon-ish)
   * Does **not** automatically create arbitrary extra groups. Use the native group type for this.
 
 ## Build Status
@@ -37,8 +36,13 @@ Standard usage of this defined type would probably look something like this:
     account { 'sysadmin':
       home_dir => '/opt/sysadmin',
       groups   => [ 'sudo', 'users' ],
-      ssh_key  => 'AAAAB3NzaC1yc2EAAAABIwAAAQEArfQmMkvtWRnwas3DIti9qAuSFQXKcE0kdp5f42PP8l2kTytJPPWp5T/q8PXDQ2d2X5KplMCMDiUQkchqhmDp840jsqBQ9iZPejAjv3w2kITgScFNymAcErtzX52iw4lnUyjZzomCW8G3YthQMaRm2NkI4wcVcjzq+SKyTfzrBoH21RgZlfcx+/50AFRrarpYqel9W5DuLmmShHxD8clPS532Z/1X+1jCW2KikUhdo98lxYTIgFno05lwFOS9Ry89UyBarn1Ecp1zXpIBE7dMQif3UyLUTU9zCVIoZiJj4iO5lemSSV0v8GL97qclBUVJpaCpc4ebR7bhi0nQ28RcxQ==',
       comment   => 'SysAdmin user',
+      ssh_keys => {
+        'some_key_comment' => {
+          type => 'ssh-rsa',
+          key  => 'AAAAB3NzaC1yc2EAAAABIwAAAQEArfQmMkvtWRnwas3DIti9qAuSFQXKcE0kdp5f42PP8l2kTytJPPWp5T/q8PXDQ2d2X5KplMCMDiUQkchqhmDp840jsqBQ9iZPejAjv3w2kITgScFNymAcErtzX52iw4lnUyjZzomCW8G3YthQMaRm2NkI4wcVcjzq+SKyTfzrBoH21RgZlfcx+/50AFRrarpYqel9W5DuLmmShHxD8clPS532Z/1X+1jCW2KikUhdo98lxYTIgFno05lwFOS9Ry89UyBarn1Ecp1zXpIBE7dMQif3UyLUTU9zCVIoZiJj4iO5lemSSV0v8GL97qclBUVJpaCpc4ebR7bhi0nQ28RcxQ==',
+        },
+      },
     }
 
 The type can also be virtualized and realized later (see the [official documentation](http://docs.puppetlabs.com/guides/virtual_resources.html) for more information on this pattern):
@@ -51,10 +55,13 @@ For use with [hiera](http://docs.puppetlabs.com/#hierahiera1), one could define 
     accounts:
       sysadmin:
         home_dir: /opt/sysadmin
-        ssh_key: AAAAB3NzaC1yc2EAAAABIwAAAQEArfQmMkvtWRnwas3DIti9qAuSFQXKcE0kdp5f42PP8l2kTytJPPWp5T/q8PXDQ2d2X5KplMCMDiUQkchqhmDp840jsqBQ9iZPejAjv3w2kITgScFNymAcErtzX52iw4lnUyjZzomCW8G3YthQMaRm2NkI4wcVcjzq+SKyTfzrBoH21RgZlfcx+/50AFRrarpYqel9W5DuLmmShHxD8clPS532Z/1X+1jCW2KikUhdo98lxYTIgFno05lwFOS9Ry89UyBarn1Ecp1zXpIBE7dMQif3UyLUTU9zCVIoZiJj4iO5lemSSV0v8GL97qclBUVJpaCpc4ebR7bhi0nQ28RcxQ==
         groups:
           - sudo
           - users
+          ssh_keys:
+            some_key_comment:
+              type: ssh-rsa
+              key: AAAAB3NzaC1yc2EAAAABIwAAAQEArfQmMkvtWRnwas3DIti9qAuSFQXKcE0kdp5f42PP8l2kTytJPPWp5T/q8PXDQ2d2X5KplMCMDiUQkchqhmDp840jsqBQ9iZPejAjv3w2kITgScFNymAcErtzX52iw4lnUyjZzomCW8G3YthQMaRm2NkI4wcVcjzq+SKyTfzrBoH21RgZlfcx+/50AFRrarpYqel9W5DuLmmShHxD8clPS532Z/1X+1jCW2KikUhdo98lxYTIgFno05lwFOS9Ry89UyBarn1Ecp1zXpIBE7dMQif3UyLUTU9zCVIoZiJj4iO5lemSSV0v8GL97qclBUVJpaCpc4ebR7bhi0nQ28RcxQ==
       appadmin:
         home_dir: /opt/appadmin
         groups:
@@ -78,6 +85,6 @@ Feel free to fork and submit pull requests for potential contributions.
   - <del>Unit Tests</del>
   - <del>Submit module to PuppetForge</del>
   - <del>Support for removing accounts</del>
-  - Support for multiple SSH keys
+  - <del>Support for multiple SSH keys</del>
   * <del>Acceptance Tests</del>
 
