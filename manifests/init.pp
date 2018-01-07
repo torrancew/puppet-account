@@ -104,11 +104,23 @@
 # Copyright 2013 Tray Torrance, unless otherwise noted
 #
 define account(
-  $username = $title, $password = '!', $shell = '/bin/bash',
-  $manage_home = true, $home_dir = undef,  $home_dir_perms = '0750',
-  $create_group = true, $system = false, $uid = undef, $ssh_key = undef,
-  $ssh_key_type = 'ssh-rsa', $groups = [], $ensure = present, $purge = false,
-  $comment= "${title} Puppet-managed User", $gid = 'users', $allowdupe = false
+  String $username                        = $title,
+  String $password                        = '!',
+  String $shell                           = '/bin/bash',
+  Boolean $manage_home                    = true,
+  Optional[Account::Path] $home_dir       = undef,
+  String $home_dir_perms                  = '0750',
+  Boolean $create_group                   = true,
+  Boolean $system                         = false,
+  Optional[Integer] $uid                  = undef,
+  Optional[String] $ssh_key               = undef,
+  String $ssh_key_type                    = 'ssh-rsa',
+  Array[Variant[Integer, String]] $groups = [],
+  Enum[present, absent] $ensure           = present,
+  Boolean $purge                          = false,
+  String $comment                         = "${title} Puppet-managed User",
+  Variant[Integer, String] $gid           = 'users',
+  Boolean $allowdupe                      = false
 ) {
 
   if $home_dir == undef {
@@ -140,14 +152,10 @@ define account(
         gid    => $uid,
     }
 
-    case $ensure {
-      present: {
-        Group[$title] -> User[$title]
-      }
-      absent: {
-        User[$title] -> Group[$title]
-      }
-      default: {}
+    if $ensure == 'present' {
+      Group[$title] -> User[$title]
+    } else {
+      User[$title] -> Group[$title]
     }
   }
   else {
@@ -155,22 +163,16 @@ define account(
   }
 
 
-  case $ensure {
-    present: {
-      $dir_ensure = directory
-      $dir_owner  = $username
-      $dir_group  = $primary_group
-      User[$title] -> File["${title}_home"] -> File["${title}_sshdir"]
-    }
-    absent: {
-      $dir_ensure = absent
-      $dir_owner  = undef
-      $dir_group  = undef
-      File["${title}_sshdir"] -> File["${title}_home"] -> User[$title]
-    }
-    default: {
-      err( "Invalid value given for ensure: ${ensure}. Must be one of present,absent." )
-    }
+  if $ensure == 'present' {
+    $dir_ensure = directory
+    $dir_owner  = $username
+    $dir_group  = $primary_group
+    User[$title] -> File["${title}_home"] -> File["${title}_sshdir"]
+  } else {
+    $dir_ensure = absent
+    $dir_owner  = undef
+    $dir_group  = undef
+    File["${title}_sshdir"] -> File["${title}_home"] -> User[$title]
   }
 
   user {
