@@ -1,119 +1,61 @@
-# == Define: Account
+# A defined type for managing user accounts and (optionally) SSH authorized keys & group membership.
 #
-# A defined type for managing user accounts
-# Features:
-#   * Account creation w/ UID control
-#   * Setting the login shell
-#   * Group creation w/ GID control (optional)
-#   * Home directory creation (and optionally management via /etc/skel)
-#   * Support for system users/groups
-#   * SSH key management (optional)
+# @example Default usage
+#     account { 'sysadmin': }
 #
-# === Parameters
+# @example Advanced usage
+#     account { 'sysadmin':
+#       password => '$6$abcdef$ghijklmnopqrstuvwxyz',
+#       shell    => '/bin/zsh',
+#       uid      => 1000,
+#       ssh_keys => {
+#         yubikey => {
+#           key  => 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789==',
+#           type => 'ssh-rsa',
+#       },
+#     }
 #
-# [*ensure*]
-#   The state at which to maintain the user account.
-#   Can be one of "present" or "absent".
-#   Defaults to present.
+# @param ensure The state in which to maintain the user account.
+# @param username The name of the user to be created.
+# @param allowdupe Whether to allow duplicate UIDs.
+# @param comment Sets comment metadata for the user.
+# @param create_group Whether or not a dedicated group should be created for this user.
+#                     If set, a group with the same name as the user will be created.
+#                     Otherwise, the user's primary group will be set to "users".
+# @param home_dir The location of the user's home directory.
+# @param home_dir_perms The permissions set on the home directory.
+# @param gid Sets the primary group of this user, if create_group is false.
+#            WARNING: Has no effect if used with $create_group = true
+# @param groups An array of additional groups to add the user to.
+# @param manage_home Whether the underlying user resource should manage the home directory.
+#                    This setting only determines whether or not puppet will copy /etc/skel.
+#                    Regardless of its value, at minimum, a home directory and a ~/.ssh directory will be created
+# @param password The password to set for the user.
+# @param purge Whether the user's home and ssh directories should be forcibly removed when ensure is absent.
+# @param shell The user's default login shell.
+# @param ssh_keys A hash of Account::Sshkey structs containing one or more public key suitable for SSH logins.
+# @param system Whether the user is a "system" user or not.
+# @param uid The UID to set for the new account. If set to undef, this will be auto-generated.
 #
-# [*username*]
-#   The name of the user to be created.
-#   Defaults to the title of the account resource.
-#
-# [*uid*]
-#   The UID to set for the new account.
-#   If set to undef, this will be auto-generated.
-#   Defaults to undef.
-#
-# [*password*]
-#   The password to set for the user.
-#   The default is to disable the password.
-#
-# [*shell*]
-#   The user's default login shell.
-#   The default is '/bin/bash'
-#
-# [*manage_home*]
-#   Whether the underlying user resource should manage the home directory.
-#   This setting only determines whether or not puppet will copy /etc/skel.
-#   Regardless of its value, at minimum, a home directory and a $HOME/.ssh
-#   directory will be created. Defaults to true.
-#
-# [*home_dir*]
-#   The location of the user's home directory.
-#   Defaults to "/home/$title".
-#
-# [*home_dir_perms*]
-#   The permissions set on the home directory.
-#   Defaults to 0750
-#
-# [*create_group*]
-#   Whether or not a dedicated group should be created for this user.
-#   If set, a group with the same name as the user will be created.
-#   Otherwise, the user's primary group will be set to "users".
-#   Defaults to true.
-#
-# [*purge*]
-#   Whether the user's home and ssh directories should be forcibly removed
-#   when set to absent
-#
-# [*groups*]
-#   An array of additional groups to add the user to.
-#   Defaults to an empty array.
-#
-# [*system*]
-#   Whether the user is a "system" user or not.
-#   Defaults to false.
-#
-# [*ssh_keys*]
-#   A hash of Account::Sshkey structs containing one or more public key suitable for SSH logins
-#   Defaults to {}.
-#
-# [*comment*]
-#   Sets comment metadata for the user
-#
-# [*gid*]
-#   Sets the primary group of this user, if $create_group = false
-#   Defaults to 'users'
-#     WARNING: Has no effect if used with $create_group = true
-#
-# [*allowdupe*]
-#   Whether to allow duplicate UIDs.
-#   Defaults to false.
-#   Valid values are true, false, yes, no.
-#
-# === Examples
-#
-#  account { 'sysadmin':
-#    home_dir => '/opt/home/sysadmin',
-#    groups   => [ 'sudo', 'wheel' ],
-#  }
-#
-# === Authors
-#
-# Tray Torrance <devwork@warrentorrance.com>
-#
-# === Copyright
-#
-# Copyright 2013 Tray Torrance, unless otherwise noted
+# @author Tray Torrance <torrancew@gmail.com>
 #
 define account(
+  Enum[present, absent] $ensure           = present,
   String $username                        = $title,
-  String $password                        = '!',
-  String $shell                           = '/bin/bash',
-  Boolean $manage_home                    = true,
+  Boolean $allowdupe                      = false,
+  String $comment                         = "${title} Puppet-managed User",
+  Boolean $create_group                   = true,
+  Variant[Integer, String] $gid           = 'users',
+  Array[Variant[Integer, String]] $groups = [],
   Optional[Account::Path] $home_dir       = undef,
   String $home_dir_perms                  = '0750',
-  Boolean $create_group                   = true,
+  Boolean $manage_home                    = true,
+  String $password                        = '!',
+  Boolean $purge                          = false,
+  String $shell                           = '/bin/bash',
+  Hash[String, Account::Sshkey] $ssh_keys = {},
   Boolean $system                         = false,
   Optional[Integer] $uid                  = undef,
-  Hash[String, Account::Sshkey] $ssh_keys = {},
-  Array[Variant[Integer, String]] $groups = [],
-  Enum[present, absent] $ensure           = present,
-  Boolean $purge                          = false,
-  String $comment                         = "${title} Puppet-managed User",
-  Variant[Integer, String] $gid           = 'users',
-  Boolean $allowdupe                      = false
 ) {
 
   if $home_dir == undef {

@@ -1,6 +1,19 @@
 # Puppet Account Module
 
-A puppet module designed to ease the management of user accounts.
+[![master branch status](https://secure.travis-ci.org/torrancew/puppet-account.png?branch=master)](http://travis-ci.org/torrancew/puppet-account)
+
+#### Table of Contents
+
+1. [Module Description - What the module does and why it is useful](#module-description)
+2. [Setup - The basics of getting started with account](#setup)
+3. [Usage - Configuration options and additional functionality](#usage)
+4. [Reference - An under-the-hood peek at what the module is doing and how](#reference)
+5. [Limitations - OS compatibility, etc.](#limitations)
+6. [Development - Guide for contributing to the module](#development)
+
+## Module Description
+
+The account module eases the creation of UNIX user accounts.
 
 Features:
 
@@ -12,26 +25,13 @@ Features:
   * Support for system users
   * SSH key management (optional)
 
-Limitations:
+## Setup
 
-  * Does **not** automatically create arbitrary extra groups. Use the native group type for this.
-
-## Build Status
-
-[![master branch status](https://secure.travis-ci.org/torrancew/puppet-account.png?branch=master)](http://travis-ci.org/torrancew/puppet-account)
-
-## Documentation
-
-A brief usage summary with examples follows.
-For full documentation of all parameters, see the inline puppet docs:
-
-    $ puppet doc manifests/init.pp
+This module has no specific dependencies, as it merely wraps several common native Puppet types in some logic.
 
 ## Usage
 
-### account
-
-Standard usage of this defined type would probably look something like this:
+Standard usage of this module would probably look something like this:
 
     account { 'sysadmin':
       home_dir => '/opt/sysadmin',
@@ -49,42 +49,21 @@ The type can also be virtualized and realized later (see the [official documenta
 
     @account { 'sysadmin': groups  => [ 'sudo', 'users' ] }
 
-For use with [hiera](http://docs.puppetlabs.com/#hierahiera1), one could define a nested hash of account resources in a hiera data file (this example assumes you use YAML):
+There is no implicit Hiera support in this module. For defining accounts via
+Hiera data, it is recommended to use the `profile` portion of the
+`role/profile` pattern.
 
-    ---
-    accounts:
-      sysadmin:
-        home_dir: /opt/sysadmin
-        groups:
-          - sudo
-          - users
-          ssh_keys:
-            some_key_comment:
-              type: ssh-rsa
-              key: AAAAB3NzaC1yc2EAAAABIwAAAQEArfQmMkvtWRnwas3DIti9qAuSFQXKcE0kdp5f42PP8l2kTytJPPWp5T/q8PXDQ2d2X5KplMCMDiUQkchqhmDp840jsqBQ9iZPejAjv3w2kITgScFNymAcErtzX52iw4lnUyjZzomCW8G3YthQMaRm2NkI4wcVcjzq+SKyTfzrBoH21RgZlfcx+/50AFRrarpYqel9W5DuLmmShHxD8clPS532Z/1X+1jCW2KikUhdo98lxYTIgFno05lwFOS9Ry89UyBarn1Ecp1zXpIBE7dMQif3UyLUTU9zCVIoZiJj4iO5lemSSV0v8GL97qclBUVJpaCpc4ebR7bhi0nQ28RcxQ==
-      appadmin:
-        home_dir: /opt/appadmin
-        groups:
-          - users
+## Reference
 
-And then use the [create_resources function](http://docs.puppetlabs.com/references/latest/function.html#createresources) in a puppet manifest:
+For the detailed reference, see the inline docs:
 
-    $accounts = hiera_hash('accounts')
-    create_resources('account', $accounts)
+    $ bundle exec rake doc
 
-## Feedback
+## Limitations
+
+* Does **not** automatically create arbitrary extra groups. Use the native group type for this.
+
+## Development
 
 Please use the github issues functionality to report any bugs or requests for new features.
-
-## Contribution
-
 Feel free to fork and submit pull requests for potential contributions.
-
-## ToDo
-
-  - <del>Unit Tests</del>
-  - <del>Submit module to PuppetForge</del>
-  - <del>Support for removing accounts</del>
-  - <del>Support for multiple SSH keys</del>
-  * <del>Acceptance Tests</del>
-

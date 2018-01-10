@@ -16,3 +16,7 @@ end
 group :acceptance do
   gem 'beaker-rspec'
 end
+
+group :doc do
+  gem 'puppet-strings'
+end
