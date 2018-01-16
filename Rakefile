@@ -9,3 +9,8 @@ end
 
 PuppetLint.configuration.ignore_paths = ['vendor/**/*.pp']
 
+task :ci => [:validate, :lint, :spec, :beaker]
+
+task :doc do
+  sh 'bundle exec puppet strings generate ./**/*.pp'
+end

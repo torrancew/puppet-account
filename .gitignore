@@ -1,8 +1,9 @@
-!/.ci/Gemfile
-!/.ci/travis.yml
-
+Gemfile.lock
 /bin/*
+/doc/*
+/junit/*
+/log/*
 /pkg/*
-/.ci/*
 /vendor/
 /spec/fixtures/
+/.yardoc/*
