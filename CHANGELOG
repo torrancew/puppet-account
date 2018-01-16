@@ -1,3 +1,10 @@
+v1.0.0: 2018-01-15
+Changes:
+  - Drop support for Puppet 3.x and lower
+  - Rewrite to support Puppet 4 Type System
+  - Add support for multiple SSH keys
+  - Add acceptance testing via Beaker
+
 v0.1.0: 2016-05-01
 Changes:
   - Add 'purge' option to forcibly remove user directories  - Igor Ajdišek (@igoraj)
